@@ -1,0 +1,165 @@
+<!--
+ Copyright (c) 2014, 2021, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+<div class="oj-hybrid-padding">
+  <h1>Customers Content Area</h1>
+  <div>
+    <div id="createCustomerDialogDiv">
+      <oj-dialog id="createCustomerDialog" dialog-title="Create Customer">
+          <div slot="body">
+                  <oj-input-text id="customerId-input" value="{{customerId}}"
+                  label-hint="Customer Id" label-edge="inside"></oj-input-text> 
+                  <br></br>  
+                  <oj-input-text id="customerName-input" value="{{customerName}}"
+                  label-hint="Customer Name" label-edge="inside"></oj-input-text> 
+                  <br></br>
+                  <oj-input-text id="customerAddress-input" value="{{customerAddress}}"
+                  label-hint="Customer Address" label-edge="inside"></oj-input-text>
+                  <br></br>
+                  <oj-input-text id="customerEmail-input" value="{{customerEmail}}"
+                  label-hint="Customer Email" label-edge="inside"></oj-input-text>
+                  <br></br>
+                  <oj-input-text id="customerDescription-input" value="{{customerDescription}}"
+                  label-hint="Customer Description" label-edge="inside"></oj-input-text>
+                  <br></br>
+                  <oj-input-text id="customerPhone-input" value="{{customerPhone}}"
+                  label-hint="Customer Phone" label-edge="inside"></oj-input-text>
+                  <br></br>
+                  <oj-input-text id="customerWebsite-input" value="{{customerWebsite}}"
+                  label-hint="Customer Web Site" label-edge="inside"></oj-input-text>
+                  <br></br>
+          </div>
+          <div slot="footer">
+          <oj-button id="okButton" on-oj-action="[[saveCustomerCreate]]">
+              Save
+              <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+              size="xxs" initials="AB" slot="startIcon"
+              src="css/images/ok_24.png"> 
+          </oj-button>
+          <oj-button id="okButton" on-oj-action="[[cancelCustomerCreate]]">
+              Cancel 
+              <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+              size="xxs" initials="AB" slot="startIcon"
+              src="css/images/cancel_24.png"> 
+          </oj-button>
+          </div>
+      </oj-dialog>
+  </div>
+  <oj-dialog id="updateCustomerDialogId" dialog-title="Update Customer">
+    <div slot="body">
+
+      <oj-input-text id="customerId-input-update" value="{{customerId}}" label-hint="Customer Id" label-edge="inside"
+        readonly="true">
+      </oj-input-text>
+      <br><br>
+
+      <oj-input-text id="customerName-input-update" value="{{customerName}}" label-hint="Customer Name"
+        label-edge="inside">
+      </oj-input-text>
+
+      <br><br>
+      <oj-input-text id="email-input-update" value="{{customerEmail}}" label-hint="Email"
+        validators="[[emailPatternValidator]]" label-edge="inside"></oj-input-text>
+      <br><br>
+      <oj-input-text id="address-input-update" value="{{customerAddress}}" label-hint="Address" label-edge="inside">
+      </oj-input-text>
+      <br><br>
+      <oj-input-text id="desc-input-update" value="{{customerDescription}}" label-hint="Description" label-edge="inside">
+      </oj-input-text>
+      <br><br>
+      <oj-input-text id="phone-input" value="{{customerPhone}}" label-hint="Phone" label-edge="inside">
+      </oj-input-text>
+      <br><br>
+      <oj-input-text id="website-input" value="{{customerWebsite}}" label-hint="Website" label-edge="inside">
+      </oj-input-text>
+    </div>
+    <div slot="footer">
+      <oj-button id="okButton" on-oj-action="[[saveUpdate]]">Save
+        <oj-avatar id="jpgSa" role="img" aria-label="Avatar of Amy Bartlet" size="xxs" initials="AB" slot="startIcon"
+          src="css/images/ok_24.png">
+        </oj-avatar>
+      </oj-button>
+      <oj-button id="okButton" on-oj-action="[[cancelUpdate]]">Cancel
+        <oj-avatar id="jpgCan1" role="img" aria-label="Avatar of Amy Bartlet" size="xxs" initials="AB"
+          slot="startIcon" src="css/images/cancel_24.png">
+        </oj-avatar>
+      </oj-button>
+    </div>
+  </oj-dialog>
+  <oj-dialog id="deleteCustomerDialogId" dialog-title="Delete Customer">
+    <div slot="body">
+      Are you sure you want to delete customer (<oj-bind-text value="[[customerId]]"></oj-bind-text>) ?
+    </div>
+    <div slot="footer">
+      <oj-button id="okButton" on-oj-action="[[okDelete]]">Ok
+        <oj-avatar id="jpgOk2" role="img" aria-label="Avatar of Amy Bartlet" size="xxs" initials="AB" slot="startIcon"
+          src="css/images/ok_24.png">
+        </oj-avatar>
+      </oj-button>
+      <oj-button id="okButton" on-oj-action="[[cancelDelete]]">Cancel
+        <oj-avatar id="jpgCan" role="img" aria-label="Avatar of Amy Bartlet" size="xxs" initials="AB" slot="startIcon"
+          src="css/images/cancel_24.png">
+        </oj-avatar>
+      </oj-button>
+    </div>
+  </oj-dialog>
+
+    <oj-input-text
+      id="filter"
+      class="oj-form-control-max-width-md"
+      label-hint="Filter"
+      label-edge="inside"
+      placeholder="Type to filter"
+      on-raw-value-changed="[[handleValueChanged]]"
+      value="{{filter}}"
+      clear-icon="always"
+    >
+    </oj-input-text>
+    <oj-button id="buttonOpener" on-oj-action="[[openCustomerCreate]]">
+      Add New Customer
+        <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+        size="xxs" initials="AB" slot="startIcon"
+        src="css/images/add_24.png">
+        </oj-avatar>
+      </oj-button>
+    <oj-table
+      id="table"
+      aria-label="Departments Table"
+      data="[[dataprovider]]"
+      scroll-policy="loadMoreOnScroll"
+      columns-default.sortable="disabled"
+      columns="{{columnArray}}"
+      on-selected-changed='{{selectedChangedListener}}'
+      selection-mode=[[selectedSelectionMode]]
+      class="demo-table-container oj-bg-body">
+      <template slot="cellTemplate" data-oj-as="cell">
+        <oj-button id="buttonOpener" on-oj-action="[[openCustomerUpdate]]" chroming="borderless">
+          <oj-avatar id="updatePNG" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/edit_24.png">
+          </oj-avatar>
+        </oj-button>
+        <oj-button id="buttonDelete" on-oj-action="[[openCustomerDelete]]" chroming="borderless">
+          <oj-avatar id="deletePNG" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/delete_24.png">
+          </oj-avatar>
+        </oj-button>
+     </template>
+    </oj-table>
+  </div>
+
+  <oj-messages
+  id="oj-messages-id"
+  messages="[[messagesDataprovider]]"
+  display="notification"
+  display-options.category="none"
+  position='{"my":{"vertical" :"top", "horizontal": "end"}, 
+     "at": {"vertical": "top", "horizontal": "end"},
+     "of": "window"}'
+  >
+  </oj-messages>
+
+</div>

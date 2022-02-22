@@ -1,0 +1,125 @@
+<!--
+ Copyright (c) 2014, 2021, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+<div class="oj-hybrid-padding">
+  <h1>Services</h1>
+  <div>
+    <oj-dialog id="updateServiceDialogId" dialog-title="Update Service">
+      <div slot="body">
+        <oj-input-text id="update-servname-input" value="{{serviceNameUpdate}}" readonly="true"
+        label-hint="Service Name" label-edge="inside"></oj-input-text>            
+        <oj-input-text id="update-servdesc-input" value="{{serviceDescUpdate}}"
+        label-hint="Service Description" label-edge="inside"></oj-input-text>
+      </div>
+      <div slot="footer">
+        <oj-button id="okButton" on-oj-action="[[saveUpdate]]">
+          Save
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/ok_24.png"> 
+        </oj-button>
+        <oj-button id="okButton" on-oj-action="[[cancelUpdate]]">
+          Cancel 
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/cancel_24.png"> 
+        </oj-button>
+      </div>
+    </oj-dialog>
+    
+    <oj-dialog id="deleteServiceDialogId" dialog-title="Delete Service">
+      <div slot="body">
+        Are you sure you wan to delete service (<oj-bind-text value = "[[deletedServiceName]]"></oj-bind-text>)?
+      </div>
+      <div slot="footer">
+        <oj-button id="okButton" on-oj-action="[[okDelete]]">
+          Ok
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/ok_24.png"> 
+        </oj-button>
+        <oj-button id="okButton" on-oj-action="[[cancelDelete]]">
+          Cancel
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/cancel_24.png">  
+        </oj-button>
+      </div>
+    </oj-dialog>
+
+      <oj-dialog id="modalDialog1" dialog-title="New Service">
+        <div slot="body">
+          <oj-input-text id="servname-input" value="{{serviceName}}"
+          label-hint="Service Name" label-edge="inside"></oj-input-text>            
+          <oj-input-text id="servdesc-input" value="{{serviceDesc}}"
+          label-hint="Service Description" label-edge="inside"></oj-input-text>
+        </div>
+        <div slot="footer">
+          <oj-button id="okButton" on-oj-action="[[save]]">Save </oj-button>
+          <oj-button id="okButton" on-oj-action="[[close]]">Cancel </oj-button>
+        </div>
+      </oj-dialog>
+      <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+      <oj-button id="buttonOpener" on-oj-action="[[open]]">
+        Add New Service
+        <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+        size="xxs" initials="AB" slot="startIcon"
+        src="css/images/add_24.png">
+        </oj-avatar>
+      </oj-button>
+      </div>
+      <oj-table
+        id="table"
+        aria-label="Departments Table"
+        data="[[dataprovider]]" style = "height:100%"
+        dnd='{"reorder": {"columns": "enabled"}}'
+        scroll-policy="loadMoreOnScroll"
+        scroll-policy-options='{"fetchSize": 10}'
+        on-selected-changed='{{selectedChangedListener}}'
+        selection-mode=[[selectedSelectionMode]]
+        columns='[
+              {"headerText": "Actions", 
+               "field": "serviceName",
+               "headerClassName": "tableHeaderStyle",
+               "className": "oj-sm-only-hide",
+               "width": "150" , "template" : "cellTemplate"},
+              {"headerText": "Service Name", 
+               "field": "serviceName",
+               "headerClassName": "tableHeaderStyle",
+               "className": "oj-sm-only-hide",
+               "resizable": "enabled"},
+              {"headerText": "Service Description", 
+              "headerClassName": "tableHeaderStyle",
+               "field": "serviceDescription",
+               "resizable": "enabled"}]'
+        class="demo-table-container oj-bg-body">
+        <template slot="cellTemplate" data-oj-as="cell">
+          <oj-button id="buttonOpener" on-oj-action="[[openUpdate]]" chroming="borderless">
+            <oj-avatar id="updatePNG" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/edit_24.png">
+            </oj-avatar>
+          </oj-button>
+          <oj-button id="buttonDelete" on-oj-action="[[openDelete]]" chroming="borderless">
+            <oj-avatar id="deletePNG" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/delete_24.png">
+            </oj-avatar>
+          </oj-button>
+       </template>
+      </oj-table>
+
+      <oj-messages
+        id="oj-messages-id"
+        messages="[[messagesDataprovider]]"
+        display="notification"
+        display-options.category="none"
+        position='{"my":{"vertical" :"top", "horizontal": "end"}, 
+           "at": {"vertical": "top", "horizontal": "end"},
+           "of": "window"}'
+      >
+      </oj-messages>
+  </div>
+</div>

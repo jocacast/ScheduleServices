@@ -1,0 +1,161 @@
+<div class="oj-hybrid-padding">
+    <h1>Users</h1>
+    <oj-dialog id="updateUserDialogId" dialog-title="Update User">
+        <div slot="body">
+            <oj-input-text id="username-input" value="{{usernameUpdate}}"
+            label-hint="User Name" label-edge="inside" readonly="true"></oj-input-text> 
+            <br></br>  
+            <oj-input-password id="password" value="{{userPassUpdate}}" label-hint="Password" mask-icon="visible">
+            </oj-input-password>
+            <br></br>
+            <oj-input-text id="userdispname-input" value="{{userDisplayNameUpdate}}"
+            label-hint="User Display Name" label-edge="inside"></oj-input-text>
+            <br></br>
+            <oj-combobox-one id="combobox1" value="{{userTypeUpdate}}" 
+                          label-hint="User Type " class="oj-form-control-max-width-md">
+              <oj-option value="ADMIN">Admin</oj-option>
+              <oj-option value="USER">User</oj-option>
+          </oj-combobox-one>
+          <br></br>
+          <oj-checkboxset id="checkboxSetAgreeId"
+          label-hint="Active"
+          label-edge="inside"
+          value="{{userActive}}">
+          <oj-option value="Y">ACTIVE</oj-option>
+        </oj-checkboxset>
+        </div>
+        <div slot="footer">
+          <oj-button id="okButton" on-oj-action="[[saveUpdate]]">
+            Save
+            <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/ok_24.png"> 
+          </oj-button>
+          <oj-button id="okButton" on-oj-action="[[cancelUpdate]]">
+            Cancel 
+            <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/cancel_24.png"> 
+          </oj-button>
+        </div>
+      </oj-dialog>
+
+      <oj-dialog id="deleteUserDialogId" dialog-title="Delete User">
+        <div slot="body">
+          Are you sure you want to delete user (<oj-bind-text value = "[[usernameUpdate]]"></oj-bind-text>)?
+        </div>
+        <div slot="footer">
+          <oj-button id="okButton" on-oj-action="[[okDelete]]">
+            Ok
+            <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/ok_24.png"> 
+          </oj-button>
+          <oj-button id="okButton" on-oj-action="[[cancelDelete]]">
+            Cancel
+            <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/cancel_24.png">  
+          </oj-button>
+        </div>
+      </oj-dialog>
+
+
+    <div id="createUserDialogDiv">
+        <oj-dialog id="createUserDialog" dialog-title="Create User">
+            <div slot="body">
+                    <oj-input-text id="username-input" value="{{username}}"
+                    label-hint="User Name" label-edge="inside"></oj-input-text> 
+                    <br></br>  
+                    <oj-input-password id="password" value="{{userPassword}}" label-hint="Password" mask-icon="visible">
+                    </oj-input-password>
+                    <br></br>
+                    <oj-input-text id="userdispname-input" value="{{userDisplayName}}"
+                    label-hint="User Display Name" label-edge="inside"></oj-input-text>
+                    <br></br>
+                    <oj-combobox-one id="combobox1" value="{{userType}}" 
+                                  label-hint="User Type " class="oj-form-control-max-width-md">
+                      <oj-option value="ADMIN">Admin</oj-option>
+                      <oj-option value="USER">User</oj-option>
+                  </oj-combobox-one>
+                  <br></br>
+                  <oj-checkboxset id="checkboxSetAgreeId"
+                  label-hint="Active"
+                  label-edge="inside"
+                  value="{{userActive}}">
+                  <oj-option value="Y">ACTIVE</oj-option>
+                </oj-checkboxset>
+            </div>
+            <div slot="footer">
+            <oj-button id="okButton" on-oj-action="[[saveUserCreate]]">
+                Save
+                <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+                size="xxs" initials="AB" slot="startIcon"
+                src="css/images/ok_24.png"> 
+            </oj-button>
+            <oj-button id="okButton" on-oj-action="[[cancelUserCreate]]">
+                Cancel 
+                <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+                size="xxs" initials="AB" slot="startIcon"
+                src="css/images/cancel_24.png"> 
+            </oj-button>
+            </div>
+        </oj-dialog>
+    </div>
+
+
+    <oj-button id="buttonOpener" on-oj-action="[[openAddNewUser]]">
+        Add New User
+        <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+        size="xxs" initials="AB" slot="startIcon"
+        src="css/images/add_24.png">
+        </oj-avatar>
+      </oj-button>
+      </div>
+    <div>
+        <oj-table id="table" aria-label="Departments Table"
+                     data="[[pagingDataProvider]]"
+                     columns='[
+                            {"headerText": "Actions", 
+                            "field": "userName",
+                            "headerClassName": "tableHeaderStyle",
+                            "className": "oj-sm-only-hide",
+                            "width": "150" , "template" : "cellTemplate"},
+                            {"headerText": "User Name", "field": "userName", "headerClassName": "tableHeaderStyle"},
+                            {"headerText": "Display Name", "field": "userDisplayName", "headerClassName": "tableHeaderStyle"},
+                            {"headerText": "User Type", "field": "userType", "headerClassName": "tableHeaderStyle"},
+                            {"headerText": "User Active", "field": "userActive", "headerClassName": "tableHeaderStyle"}]' 
+                     class="oj-sm-width-full"
+                     on-selected-changed='{{selectedChangedListener}}'
+                     selection-mode=[[selectedSelectionMode]]
+                     scroll-policy='loadMoreOnScroll'>
+                     <template slot="cellTemplate" data-oj-as="cell">
+                        <oj-button id="buttonOpener" on-oj-action="[[openUpdate]]" chroming="borderless">
+                          <oj-avatar id="updatePNG" role="img" aria-label="Avatar of Amy Bartlet"
+                          size="xxs" initials="AB" slot="startIcon"
+                          src="css/images/edit_24.png">
+                          </oj-avatar>
+                        </oj-button>
+                        <oj-button id="buttonDelete" on-oj-action="[[openDelete]]" chroming="borderless">
+                          <oj-avatar id="deletePNG" role="img" aria-label="Avatar of Amy Bartlet"
+                          size="xxs" initials="AB" slot="startIcon"
+                          src="css/images/delete_24.png">
+                          </oj-avatar>
+                        </oj-button>
+                     </template>
+
+
+              </oj-table>
+    </div>
+
+    <oj-messages
+    id="oj-messages-id"
+    messages="[[messagesDataprovider]]"
+    display="notification"
+    display-options.category="none"
+    position='{"my":{"vertical" :"top", "horizontal": "end"}, 
+       "at": {"vertical": "top", "horizontal": "end"},
+       "of": "window"}'
+  >
+  </oj-messages>
+</div>

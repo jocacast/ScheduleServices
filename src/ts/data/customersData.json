@@ -1,0 +1,20 @@
+[
+    {
+        "customerAddress": "San Enrique #14",
+        "customerDescription": "N/A",
+        "customerEmail": "jcastil91@gmail.com",
+        "customerId": "1",
+        "customerName": "Jorge",
+        "customerPhone": "3331744792",
+        "customerWebsite": "jcastil.com"
+    },
+    {
+        "customerAddress": "San Enrique #15",
+        "customerDescription": "N/A",
+        "customerEmail": "jcastil92@gmail.com",
+        "customerId": "2",
+        "customerName": "José",
+        "customerPhone": "3331744793",
+        "customerWebsite": "jcastil92.com"
+    }
+]

@@ -1,0 +1,338 @@
+<!--
+ Copyright (c) 2014, 2021, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+<div class="oj-hybrid-padding">
+  <h1>Services Scheduler</h1>
+  <div class="oj-flex oj-flex-init"><!--Main Container-->
+    
+    <div class = 'oj-flex oj-flex-item oj-sm-12'> <!--Filter components-->
+      <div class='oj-flex-item oj-lg-2 oj-md-4 oj-sm-12'> <!--Status-->
+        <oj-combobox-one id="combobox1"
+          label-hint="Status" class="oj-form-control-max-width-md" value="{{statusValue}}">
+          <oj-option value="ALL">ALL</oj-option>
+          <oj-option value="ACTIVE">ACTIVE</oj-option>
+          <oj-option value="CLOSED">CLOSED</oj-option>
+          <oj-option value="CANCELLED">CANCELLED</oj-option>
+        </oj-combobox-one>
+      </div>
+      <div class='oj-flex-item oj-lg-2 oj-md-4 oj-sm-12'> <!--Customer-->
+        <oj-combobox-one id="customerComboBox" value="{{selectedCustomer}}" options="[[customerDataProvider]]"
+        label-hint="Customer" label-edge="inside"
+        class="oj-form-control-max-width-md">
+      </oj-combobox-one>
+      </div>
+      <div class='oj-flex-item oj-lg-2 oj-md-4 oj-sm-12'> <!--Service-->
+        <oj-combobox-one id="serviceComboBox" value="{{selectedService}}" options="[[serviceDataProvider]]"
+        label-hint="Service" label-edge="inside"
+        class="oj-form-control-max-width-md">
+      </oj-combobox-one>
+      </div>
+      &nbsp;
+      &nbsp;
+      <div class='oj-flex oj-flex-item oj-lg-5 oj-md-12 oj-sm-12'> <!--Date from/to-->
+        
+        <div class="oj-flex oj-flex-item oj-lg-6 oj-md-6 oj-sm-12"><!--From date-->
+          
+          <div class = "oj-flex-item oj-sm-2">
+            <oj-label  for="date">From</oj-label>
+          </div>
+
+          <div class = "oj-flex-item oj-sm-10">
+            <oj-input-date id="date" value='{{fromValue}}' class="oj-form-control-max-width-sm"
+            autocomplete="off">
+            </oj-input-date>
+          </div>
+
+        </div>
+
+
+        <div class="oj-flex oj-flex-item oj-lg-6 oj-md-6 oj-sm-12"><!--To date-->
+          <div class = "oj-flex-item oj-sm-2">
+            <oj-label for="date">To</oj-label>
+          </div>
+
+          <div class = "oj-flex-item oj-sm-7">
+            <oj-input-date id="date" value='{{toValue}}' class="oj-form-control-max-width-sm"
+            autocomplete="off">
+            </oj-input-date>
+          </div>
+          &nbsp;&nbsp;
+          <div class = "oj-flex-item oj-sm-2">
+            <oj-button id="refreshId" on-oj-action="[[refresh]]">
+              <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+              size="xxs" initials="AB" slot="startIcon"
+              src="css/images/refresh_24.png">
+              </oj-avatar>
+            </oj-button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <oj-dialog id="scheduleModalDialog" dialog-title="New Schedule">
+      <div slot="body">
+        <oj-combobox-one id="customerComboBox" value="{{scheduleCustomer}}" options="[[customerDataProvider]]"
+          label-hint="Customer" label-edge="inside"
+          class="oj-form-control-max-width-md">
+        </oj-combobox-one>          
+        <oj-combobox-one id="serviceComboBox" value="{{scheduleService}}" options="[[serviceDataProvider]]"
+          label-hint="Service" label-edge="inside"
+          class="oj-form-control-max-width-md">
+        </oj-combobox-one>     
+        <oj-input-date id="schDate-input" value="{{scheduleDate}}"
+        label-hint="Schedule Date" label-edge="inside"></oj-input-date>     
+        <oj-input-text id="schDescription-input" value="{{scheduleDescription}}"
+        label-hint="Service Description" label-edge="inside"></oj-input-text>       
+      </div>
+      <div slot="footer">
+        <oj-button id="okButton" on-oj-action="[[saveCreate]]">Save
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/ok_24.png"> </oj-button>
+        <oj-button id="okButton" on-oj-action="[[closeCreate]]">Cancel 
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/cancel_24.png"> 
+        </oj-button>
+      </div>
+    </oj-dialog>
+
+    <oj-dialog id="editScheduleModalDialog" dialog-title="Edit Schedule">
+      <div slot="body">
+        <oj-combobox-one id="customerComboBox" value="{{scheduleCustomer}}" options="[[customerDataProvider]]"
+          label-hint="Customer" label-edge="inside"
+          class="oj-form-control-max-width-md">
+        </oj-combobox-one>          
+        <oj-combobox-one id="serviceComboBox" value="{{scheduleService}}" options="[[serviceDataProvider]]"
+          label-hint="Service" label-edge="inside"
+          class="oj-form-control-max-width-md">
+        </oj-combobox-one>     
+        <oj-input-date id="schDate-input" value="{{scheduleDate}}"
+        label-hint="Schedule Date" label-edge="inside"></oj-input-date>     
+        <oj-input-text id="schDescription-input" value="{{scheduleDescription}}"
+        label-hint="Service Description" label-edge="inside"></oj-input-text>       
+      </div>
+      <div slot="footer">
+        <oj-button id="okButton" on-oj-action="[[saveEdit]]">Save
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/ok_24.png"> </oj-button>
+        <oj-button id="okButton" on-oj-action="[[cancelEdit]]">Cancel 
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/cancel_24.png"> 
+        </oj-button>
+      </div>
+    </oj-dialog>
+
+    <oj-dialog id="closeScheduleDialog" dialog-title="Close Schedule">
+      <div slot="body">
+        Are you sure you want to close the schedule?   
+        <oj-input-text id="schDescription-input" value="{{scheduleChangeStatusNote}}"
+        label-hint="Schedule Closing Note" label-edge="inside"></oj-input-text>    
+      </div>
+      <div slot="footer">
+        <oj-button id="okButton" on-oj-action="[[saveCloseSchedule]]">Save
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/ok_24.png"> </oj-button>
+        <oj-button id="okButton" on-oj-action="[[cancelCloseSchedule]]">Cancel 
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/cancel_24.png"> 
+        </oj-button>
+      </div>
+    </oj-dialog>
+
+    <oj-dialog id="cancelScheduleDialog" dialog-title="Cancel Schedule">
+      <div slot="body">
+        Are you sure you want to cancel the schedule?   
+        <oj-input-text id="schDescription-input" value="{{scheduleChangeStatusNote}}"
+        label-hint="Schedule Closing Note" label-edge="inside"></oj-input-text>    
+      </div>
+      <div slot="footer">
+        <oj-button id="okButton" on-oj-action="[[saveCancelSchedule]]">Save
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/ok_24.png"> </oj-button>
+        <oj-button id="okButton" on-oj-action="[[cancelCancelSchedule]]">Cancel 
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/cancel_24.png"> 
+        </oj-button>
+      </div>
+    </oj-dialog>
+
+    <oj-dialog id="notesScheduleDialog" dialog-title="Schedule Notes" style="width:800px">
+      <div slot ="body">
+        <oj-input-text id="schDescription-input" value="{{newNote}}"
+        label-hint="Add New Note" label-edge="inside"></oj-input-text>
+        <oj-button id="okButton" on-oj-action="[[saveNewNote]]">Add
+          <oj-avatar id="newNoteJpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/add_24.png"> </oj-button>  
+        <oj-table
+        id="table"
+        aria-label="Departments Table"
+        data="[[notesDataProvider]]" style = "height:100%"
+        dnd='{"reorder": {"columns": "enabled"}}'
+        scroll-policy="loadMoreOnScroll"
+        scroll-policy-options='{"fetchSize": 10}'
+        on-selected-changed='{{selectedNoteChangedListener}}'
+        selection-mode=[[selectedSelectionMode]]
+        columns='[
+              {"headerText": "Actions", 
+              "field": "noteId",
+              "headerClassName": "tableHeaderStyle",
+              "className": "oj-sm-only-hide",
+              "width": "90" , "template" : "cellTemplate"},
+              {"headerText": "Note", 
+              "field": "noteDescription",
+              "headerClassName": "tableHeaderStyle",
+              "className": "oj-sm-only-hide",
+              "style": "white-space:normal;word-wrap:break-word; text-align: left;vertical-align: top;",
+              "resizable": "enabled"},
+              {"headerText": "Added by", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "noteAddedBy",
+              "resizable": "enabled"},
+              {"headerText": "Added Date", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "noteAddedDate",
+              "resizable": "enabled"}
+              ]'
+        class="demo-table-container oj-bg-body">
+        <template slot="cellTemplate" data-oj-as="cell">
+          <oj-button id="deleteNoteBtn" on-oj-action="[[deleteNote]]">
+            <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/cancel_24.png">
+            </oj-avatar>
+          </oj-button>
+       </template>
+      </oj-table>
+      </div>
+      <div slot="footer">
+        <oj-button id="okButton" on-oj-action="[[okNotes]]">Ok
+          <oj-avatar id="jpgOk" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/ok_24.png"> </oj-button>
+      </div>
+    </oj-dialog>
+
+
+    <div class = 'oj-flex-item oj-sm-12'>
+      <div class="oj-flex oj-sm-flex-items-initial oj-sm-justify-content-center">
+        <oj-button id="buttonOpener" on-oj-action="[[openCreate]]">
+          Add New Schedule
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/add_24.png">
+          </oj-avatar>
+        </oj-button>
+      </div><!--Table component-->
+        <oj-table
+        id="table"
+        aria-label="Departments Table"
+        data="[[dataProvider]]" style = "height:100%"
+        dnd='{"reorder": {"columns": "enabled"}}'
+        scroll-policy="loadMoreOnScroll"
+        scroll-policy-options='{"fetchSize": 10}'
+        on-selected-changed='{{selectedChangedListener}}'
+        selection-mode=[[selectedSelectionMode]]
+        columns='[
+              {"headerText": "Actions", 
+              "field": "scheduleId",
+              "headerClassName": "tableHeaderStyle",
+              "className": "oj-sm-only-hide",
+              "width": "200" , "template" : "cellTemplate"},
+              {"headerText": "Id", 
+              "field": "scheduleId",
+              "headerClassName": "tableHeaderStyle",
+              "className": "oj-sm-only-hide",
+              "resizable": "enabled"},
+              {"headerText": "Customer Id", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "scheduleCustomer",
+              "resizable": "enabled"},
+              {"headerText": "Customer Name", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "scheduleCustomerName",
+              "resizable": "enabled"},
+              {"headerText": "Service", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "scheduleService",
+              "resizable": "enabled"},
+              {"headerText": "Status", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "scheduleStatus",
+              "resizable": "enabled"},
+              {"headerText": "Schedule Date", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "scheduleDate",
+              "resizable": "enabled"},
+              {"headerText": "Description", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "scheduleDescription",
+              "resizable": "enabled"},
+              {"headerText": "Added By", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "scheduleAddedBy",
+              "resizable": "enabled"},
+              {"headerText": "Added Date", 
+              "headerClassName": "tableHeaderStyle",
+              "field": "scheduleAddedDate",
+              "resizable": "enabled"},
+              {"headerText": "Notes", 
+              "field": "details",
+              "headerClassName": "tableHeaderStyle",
+              "className": "oj-sm-only-hide",
+              "width": "90" , "template" : "detailTemplate"}
+              ]'
+        class="demo-table-container oj-bg-body">
+        <template slot="cellTemplate" data-oj-as="cell">
+          <oj-button id="editBtn" on-oj-action="[[editSchedule]]">
+            <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/edit_24.png">
+            </oj-avatar>
+          </oj-button>
+          <oj-button id="cancelBtn" on-oj-action="[[cancelSchedule]]">
+            <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/cancel_24.png">
+            </oj-avatar>
+          </oj-button>
+          <oj-button id="closeBtn" on-oj-action="[[closeSchedule]]">
+            <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+            size="xxs" initials="AB" slot="startIcon"
+            src="css/images/ok_24.png">
+            </oj-avatar>
+          </oj-button>
+       </template>
+       <template slot="detailTemplate" data-oj-as="cell">
+        <oj-button id="detailBtn" on-oj-action="[[openScheduleNotes]]">
+          <oj-avatar id="jpg" role="img" aria-label="Avatar of Amy Bartlet"
+          size="xxs" initials="AB" slot="startIcon"
+          src="css/images/details_24.png">
+          </oj-avatar>
+        </oj-button>
+      </template>
+      </oj-table>
+      <oj-messages
+      id="oj-messages-id"
+      messages="[[messagesDataprovider]]"
+      display="notification"
+      display-options.category="none"
+      position='{"my":{"vertical" :"top", "horizontal": "end"}, 
+         "at": {"vertical": "top", "horizontal": "end"},
+         "of": "window"}'
+      >
+      </oj-messages>
+    </div>  
+  </div>
+</div>
+
